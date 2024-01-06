@@ -1,0 +1,64 @@
+import pandas as pd
+import numpy as np
+import numpy as np
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+from google.colab import drive
+drive.mount('/content/drive')
+house_price = pd.read_csv('/content/drive/MyDrive/نسخة من boston.csv')
+house_price.head()
+house_price.info()
+house_price.describe()
+house_price.columns
+house_price.shape
+house_price.nunique
+from sklearn.preprocessing import StandardScaler
+
+sc=StandardScaler()
+x=boston.drop('MEDV',axis=1)
+for i in x:
+    boston[i]=sc.fit_transform(boston[[i]])
+from sklearn.model_selection import train_test_split
+y=house_price['MEDV']
+X_train,X_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
+from sklearn.linear_model import LinearRegression,Lasso,Ridge
+from sklearn.metrics import r2_score,mean_squared_error
+import numpy as np
+lr=LinearRegression()
+lr.fit(X_train,y_train)
+y_pred=lr.predict(X_test)
+print('training',lr.score(X_train,y_train))
+print('testing',lr.score(X_test,y_test))
+print('rmse',np.sqrt(mean_squared_error(y_test,y_pred)))
+print('R2_SCORE' ,r2_score(y_test,y_pred))
+lasso=Lasso(alpha=1.0)
+lasso.fit(X_train,y_train)
+ypredlasso=lasso.predict(X_test)
+print('training',lasso.score(X_train,y_train))
+print('testing',lasso.score(X_test,y_test))
+print('rmse',np.sqrt(mean_squared_error(y_test,y_pred)))
+print('R2_SCORE' ,r2_score(y_test,y_pred))
+import tensorflow as tf
+print("TensorFlow version:", tf.__version__)
+mnist = tf.keras.datasets.mnist
+
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Flatten(input_shape=(28, 28)),
+  tf.keras.layers.Dense(128, activation='relu'),
+  tf.keras.layers.Dense(64, activation= 'relu'),
+  tf.keras.layers.Dropout(0.2),
+  tf.keras.layers.Dense(10)
+])
+predictions = model(x_train[:1]).numpy()
+predictions
+tf.nn.softmax(predictions).numpy()
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+loss_fn(y_train[:1], predictions).numpy()
+model.compile(optimizer='adam',
+              loss=loss_fn,
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=5)
